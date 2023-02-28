@@ -1,4 +1,5 @@
 import { getBingoNumbers } from "../js/getBingoNumbers";
+import { userIcon, displayIcon } from "../js/getIcons";
 
 export class BingoCard extends HTMLElement {
   numbers = [];
@@ -27,6 +28,19 @@ export class BingoCard extends HTMLElement {
         h1 {
           color: #fff;
           text-align: center;
+          width: 100%;
+          height: fit-content;
+          display: flex;
+          flex-direction: row-reverse;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          margin: 6px 0;
+        }
+
+        h1 svg {
+          width: 30px;
+          height: 30px;
         }
 
         .numbers {
@@ -57,6 +71,7 @@ export class BingoCard extends HTMLElement {
   connectedCallback() {
     this.render();
     this.insertNumbersToPlay();
+    this.insertIcon();
   }
 
   checkCell(id, index) {
@@ -85,6 +100,19 @@ export class BingoCard extends HTMLElement {
       numberCell.textContent = number;
       numbersContainer.appendChild(numberCell);
     }
+  }
+
+  insertIcon() {
+    let icon;
+
+    if (this.getAttribute("name") === "CPU") {
+      icon = displayIcon();
+    } else {
+      icon = userIcon();
+    }
+
+    const playerTag = this.shadowRoot.querySelector("h1");
+    Array.from(icon.node).map(n => playerTag.appendChild(n));
   }
 
   render() {
